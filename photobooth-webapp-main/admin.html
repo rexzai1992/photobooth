@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Print Photos</title>
+  <link rel="icon" href="Assets/fish-photobooth/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="StyleSheets/admin.css" />
+</head>
+<body>
+  <div class="logo">
+    <img src="Assets/fish-photobooth/logo-new.png" alt="Logo">
+  </div>
+
+  <div class="admin-container">
+    <h1>Photo Print Queue</h1>
+    <div class="filter-buttons">
+      <button id="filterAll" class="filter-btn active">All Photos</button>
+      <button id="filterUnprinted" class="filter-btn">Unprinted</button>
+      <button id="filterPrinted" class="filter-btn">Printed</button>
+    </div>
+    <div id="photoGrid" class="photo-grid"></div>
+  </div>
+
+  <script type="module" src="Javascripts/admin.js"></script>
+</body>
+</html>

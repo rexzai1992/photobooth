@@ -1,3 +1,9 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 // constants
 const WIDTH = 1176, HEIGHT = 1470;
 
@@ -9,7 +15,7 @@ const canvas = document.getElementById('finalCanvas'),
       addSeaweedBtn = document.getElementById('addSeaweed'),
       addAxBtn = document.getElementById('addAx'),
       addBubbleBtn = document.getElementById('addBubble'),
-      downloadBtn = document.getElementById('downloadBtn'),
+      proceedBtn = document.getElementById('proceedBtn'),
       homeBtn = document.getElementById('homeBtn'),
       resetBtn = document.getElementById('reset');
 
@@ -111,9 +117,27 @@ addBubbleBtn.addEventListener('click', () => { addSticker(bubbleImages[bubbleInd
 // reset
 resetBtn.addEventListener('click', () => { stickers = []; drawCanvas(); });
 
-// download
-downloadBtn.addEventListener('click', () => {
-  canvas.toBlob(blob => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'fish-photobooth.png'; a.click(); }, 'image/png');
+// proceed - upload to admin
+proceedBtn.addEventListener('click', async () => {
+  proceedBtn.disabled = true;
+  proceedBtn.textContent = 'Uploading...';
+
+  const imageData = canvas.toDataURL('image/png');
+
+  const { error } = await supabase
+    .from('photos')
+    .insert({ image_data: imageData });
+
+  if (error) {
+    console.error('Error uploading photo:', error);
+    alert('Failed to upload photo. Please try again.');
+    proceedBtn.disabled = false;
+    proceedBtn.textContent = 'Proceed';
+    return;
+  }
+
+  alert('Photo uploaded successfully! You can now print it from the admin page.');
+  window.location.href = 'index.html';
 });
 
 // home
